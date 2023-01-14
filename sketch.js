@@ -4,7 +4,7 @@ The Game Project
 
 Week 3
 
-Game interaction
+Canyons and coins
 
 */
 
@@ -17,6 +17,9 @@ var isLeft;
 var isRight;
 var isFalling;
 var isPlummeting;
+
+var canyon;
+var collectable;
 
 
 
@@ -32,6 +35,10 @@ function setup()
     isRight = false;
     isFalling = false;
     isPlummeting = false;
+    
+    canyon = {x_pos: width*0.75, width: 60};    
+    collectable = {x_pos: width/6, y_pos: floorPos_y, size: 30, isFound: false};
+    collectable.y_pos = floorPos_y - collectable.size/2;
 
     
 }
@@ -49,8 +56,31 @@ function draw()
 	rect(0, floorPos_y, width, height - floorPos_y); //draw some green ground
 
 	//draw the canyon
-
-
+    fill(200);
+    rect(canyon.x_pos, floorPos_y, canyon.width, height-floorPos_y);
+    fill(100,100,100, 100);
+    rect(canyon.x_pos, floorPos_y, canyon.width * 0.2 , height-floorPos_y);
+    rect(canyon.x_pos + canyon.width * 0.8 , floorPos_y, canyon.width * 0.2, height-floorPos_y);
+    
+    //a collectable token - eg. a jewel, fruit, coins
+    if (!collectable.isFound)
+    {
+        fill(255, 215, 0);
+        ellipse(collectable.x_pos, collectable.y_pos , collectable.size, collectable.size);
+        
+        if( dist(gameChar_x, gameChar_y, collectable.x_pos, collectable.y_pos) < 25 + collectable.size/2)
+        {
+            collectable.isFound = true;
+        }
+    }
+    
+    if (isPlummeting)
+    {
+        gameChar_y += 10;
+        isLeft = isRight = false;
+    }
+    
+    
 	//the game character
 	if(isLeft && isFalling)
 	{
@@ -200,10 +230,20 @@ function draw()
     if (gameChar_y < floorPos_y)
         {
             isFalling  = true;
-            gameChar_y = min(gameChar_y + 6, floorPos_y);
+            gameChar_y = min(gameChar_y + 5, floorPos_y);
         }
     else{
         isFalling  = false;
+    }
+    
+//    detect when the character is over the canyon
+    if(gameChar_x > canyon.x_pos + 14 && gameChar_x < canyon.x_pos + canyon.width - 14 && gameChar_y >= floorPos_y)
+    {
+        isPlummeting = true;
+    }
+    else
+    {
+        isPlummeting = false;
     }
 
 }
@@ -215,23 +255,19 @@ function keyPressed()
 	// keys are pressed.
 
 	//open up the console to see how these work
-    if (keyCode == 39)
+    if (keyCode == 39 && !isPlummeting)
     {
         isRight = true;   
-        console.log("keyPressed: " + key);
-        console.log("keyPressed: " + keyCode);
     }
     
-    if (keyCode == 37)
+    if (keyCode == 37 && !isPlummeting)
     {
         isLeft = true;
-        console.log("keyPressed: " + key);
-        console.log("keyPressed: " + keyCode);
     }
 	
-    if ( (keyCode == 38 || keyCode == 32) && !isFalling )
+    if ( (keyCode == 38 || keyCode == 32) && !isFalling && !isPlummeting)
     {
-        gameChar_y -= 100;
+        gameChar_y -= 150;
     }
 }
 
@@ -239,21 +275,15 @@ function keyReleased()
 {
 	// if statements to control the animation of the character when
 	// keys are released.
-    console.log("keyReleased: " + key);
-    console.log("keyReleased: " + keyCode);
     
     if (keyCode == 39)
     {
-        isRight = false;   
-        console.log("keyReleased: " + key);
-        console.log("keyReleased: " + keyCode);
+        isRight = false;
     }
     
     if (keyCode == 37)
     {
         isLeft = false;
-        console.log("keyReleased: " + key);
-        console.log("keyReleased: " + keyCode);
     }
     
 }
