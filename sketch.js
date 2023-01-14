@@ -13,16 +13,16 @@ var isRight;
 var isFalling;
 var isPlummeting;
 
-var canyon;
-var collectable;
 var trees_x;
 var treePos_y;
 var clouds;
 var mountains;
 
-var cameraPosX
-var old_gameChar_x
+var cameraPosX;
+var old_gameChar_x;
 
+var collectables;
+var canyons;
 
 function setup()
 {
@@ -37,12 +37,32 @@ function setup()
     isFalling = false;
     isPlummeting = false;
     
-    canyon = {x_pos: width*0.75, width: 60};    
-    collectable = {x_pos: width/6, y_pos: floorPos_y, size: 30, isFound: false};
-    collectable.y_pos = floorPos_y - collectable.size/2;
-    
     trees_x = [100, 300, 600, 900, 1200, 1600, 6000, 9000, 12000];
     treePos_y = floorPos_y;
+    
+    collectables = [
+        {x_pos: width/6, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width/2, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 0.75, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 1.2, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 1.5, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 1.8, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 2.1, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 2.4, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 2.7, y_pos: floorPos_y, size: 30, isFound: false}
+    ];
+    
+    canyons = [
+        {x_pos: width*0.25, width: 60},
+        {x_pos: width*0.75, width: 60},
+        {x_pos: width*1.25, width: 60},
+        {x_pos: width*1.75, width: 60},
+        {x_pos: width*2.25, width: 60},
+        {x_pos: width*2.75, width: 60},
+        {x_pos: width*3.75, width: 60},
+        {x_pos: width*3.75, width: 60},
+    ];
     
     clouds = [
         {x_pos: 150,  y_pos: 50 ,width: 150},
@@ -92,61 +112,36 @@ function draw()
     translate(-cameraPosX, 0);
 
 	//draw the canyon
-    fill(200);
-    rect(canyon.x_pos, floorPos_y, canyon.width, height-floorPos_y);
-    fill(100,100,100, 100);
-    rect(canyon.x_pos, floorPos_y, canyon.width * 0.2 , height-floorPos_y);
-    rect(canyon.x_pos + canyon.width * 0.8 , floorPos_y, canyon.width * 0.2, height-floorPos_y);
-    
+    for(var i = 0; i < canyons.length; i++)
+    {
+        drawCanyon(canyons[i]);
+        //detect when the character is over the canyon
+        checkCanyon(canyons[i]);
+    }
     
     //clouds
-	for(var i = 0; i < clouds.length; i++)
-    {
-        noStroke();
-        fill(255);
-        ellipse(clouds[i].x_pos, clouds[i].y_pos, clouds[i].width, 70);
-        ellipse(clouds[i].x_pos - clouds[i].width/3, clouds[i].y_pos, clouds[i].width*0.8, 50);
-        ellipse(clouds[i].x_pos + clouds[i].width/3, clouds[i].y_pos, clouds[i].width*0.8, 50);
-    }
-    
+	drawClouds();
     // mountains
-    for(var i = 0; i < mountains.length; i++)
-    {
-        fill(180);
-        triangle(mountains[i].x_pos, floorPos_y, mountains[i].x_pos + mountains[i].width, floorPos_y, mountains[i].x_pos + mountains[i].width/2, floorPos_y-mountains[i].height);
-        triangle(mountains[i].x_pos, floorPos_y, mountains[i].x_pos + mountains[i].width, floorPos_y, mountains[i].x_pos + mountains[i].width/4, floorPos_y-mountains[i].height*0.85);
-    }
-    
+    drawMountains();
     // trees
-    for(var i = 0; i < trees_x.length; i++)
-    {
-        fill(148);
-        rect(trees_x[i], treePos_y - 100, 50, 100);
-        fill(0, 255, 0);
-
-        triangle(trees_x[i] - 40, treePos_y - 40, trees_x[i] + 90, treePos_y - 40, trees_x[i] + 25, treePos_y -  152);
-        triangle(trees_x[i] - 40, treePos_y -  70, trees_x[i] + 90, treePos_y - 70, trees_x[i] + 25, treePos_y - 182);
-    }
-    
+    drawTrees();
     
     //a collectable token - eg. a jewel, fruit, coins
-    if (!collectable.isFound)
+    for(var i = 0; i < collectables.length; i++)
     {
-        fill(255, 215, 0);
-        ellipse(collectable.x_pos, collectable.y_pos , collectable.size, collectable.size);
-        
-        if( dist(gameChar_x, gameChar_y, collectable.x_pos, collectable.y_pos) < 25 + collectable.size/2)
+        if (!collectables[i].isFound)
         {
-            collectable.isFound = true;
+            drawCollectable(collectables[i]);
+            checkCollectable(collectables[i]);
         }
     }
+    
     
     if (isPlummeting)
     {
         gameChar_y += 10;
         isLeft = isRight = false;
     }
-    
     
 	//the game character
 	if(isLeft && isFalling)
@@ -305,15 +300,6 @@ function draw()
         isFalling  = false;
     }
     
-    //detect when the character is over the canyon
-    if(gameChar_x > canyon.x_pos + 14 && gameChar_x < canyon.x_pos + canyon.width - 14 && gameChar_y >= floorPos_y)
-    {
-        isPlummeting = true;
-    }
-    else
-    {
-        isPlummeting = false;
-    }
 
 }
 
@@ -356,3 +342,78 @@ function keyReleased()
     }
     
 }
+
+
+function drawClouds()
+{
+    for(var i = 0; i < clouds.length; i++)
+    {
+        noStroke();
+        fill(255);
+        ellipse(clouds[i].x_pos, clouds[i].y_pos, clouds[i].width, 70);
+        ellipse(clouds[i].x_pos - clouds[i].width/3, clouds[i].y_pos, clouds[i].width*0.8, 50);
+        ellipse(clouds[i].x_pos + clouds[i].width/3, clouds[i].y_pos, clouds[i].width*0.8, 50);
+    }
+    
+}
+
+
+function drawMountains()
+{
+    for(var i = 0; i < mountains.length; i++)
+    {
+        fill(180);
+        triangle(mountains[i].x_pos, floorPos_y, mountains[i].x_pos + mountains[i].width, floorPos_y, mountains[i].x_pos + mountains[i].width/2, floorPos_y-mountains[i].height);
+        triangle(mountains[i].x_pos, floorPos_y, mountains[i].x_pos + mountains[i].width, floorPos_y, mountains[i].x_pos + mountains[i].width/4, floorPos_y-mountains[i].height*0.85);
+    }
+}
+
+
+function drawTrees()
+{
+    for(var i = 0; i < trees_x.length; i++)
+    {
+        fill(148);
+        rect(trees_x[i], treePos_y - 100, 50, 100);
+        fill(0, 255, 0);
+
+        triangle(trees_x[i] - 40, treePos_y - 40, trees_x[i] + 90, treePos_y - 40, trees_x[i] + 25, treePos_y -  152);
+        triangle(trees_x[i] - 40, treePos_y -  70, trees_x[i] + 90, treePos_y - 70, trees_x[i] + 25, treePos_y - 182);
+    }
+}
+
+
+function drawCollectable(t_collectable)
+{
+    fill(255, 215, 0);
+    ellipse(t_collectable.x_pos, t_collectable.y_pos - t_collectable.size/2 , t_collectable.size, t_collectable.size);
+}
+
+
+function drawCanyon(t_canyon)
+{
+    fill(200);
+    rect(t_canyon.x_pos, floorPos_y, t_canyon.width, height-floorPos_y);
+    fill(100,100,100, 100);
+    rect(t_canyon.x_pos, floorPos_y, t_canyon.width * 0.2 , height-floorPos_y);
+    rect(t_canyon.x_pos + t_canyon.width * 0.8 , floorPos_y, t_canyon.width * 0.2, height-floorPos_y);
+}
+
+
+function checkCollectable(t_collectable)
+{
+    if( dist(gameChar_x, gameChar_y, t_collectable.x_pos, t_collectable.y_pos) < 25 + t_collectable.size/2)
+    {
+        t_collectable.isFound = true;
+    }
+}
+
+function checkCanyon(t_canyon)
+{
+    if(gameChar_x > t_canyon.x_pos + 14 && gameChar_x < t_canyon.x_pos + t_canyon.width - 14 && gameChar_y >= floorPos_y)
+    {
+        isPlummeting = true;
+    }
+}
+
+
