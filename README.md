@@ -1,45 +1,50 @@
-### The Game Project 2b - Using variables
+### The Game Project 3 – Game Character interaction
 
-It's time to introduce some variables to your code. You won't notice
-much difference in your graphics just yet, but this powerful technique will
-be essential for later stages in the game project.
+Now to add some proper interaction to your game.
 
 1. Inspect the code [0 marks]
 
-2. Moveable game character [2 marks]
-	- Copy the code for the front-facing character from part 2a a into
-	the draw function of this code
-	- In `mousePressed`, write code using `mouseX` and `mouseY` to change the value of gameChar_x & gameChar_y so that the character appears where you click the mouse
+2. Create variables for interaction [1 marks]
+	- Declare four variables: `isLeft`, `isRight`, `isFalling` and `isPlummeting`
+	- Initialise each of them to `false`. These variables will be used to animate your game
+	 character.
 
-3. Place the tree [2 marks]
-	- Copy the code for the tree from part 1 into the draw function of this code.
-	- Now adapt your code so that treePos_x and treePos_y control the position of the tree.
-		HINT 1: You will need to use treePos_x and treePos_y to control position in each of your shape commands for the tree.
-		HINT 2: You can test this by changing the values of treePos_x and treePos_y and seeing if the whole tree moves intact.
-	- In `setup` initialise treePos_x and treePos_y so that the tree sits on the green ground
-	- Check that the game character appears in front of the tree. The game character must be drawn after the tree is drawn.
-	- Make sure your tree is anchored correctly
+3. Implement left and right for keyPressed [1 marks]
+	- Inside the function keyPressed write two if statements to make isLeft = true when the 'a' key is pressed and isRight = true when the 'd' key is pressed.
+	- Test your conditional statements  using `console.log()` to see the values of isLeft and isRight
+		- HINT: look up the difference between keyCode and key to help you decide which variable you need to use.
 
-4. Canyon [2 marks]
-	- In `setup`, initialise the variable `canyon` with this object `{x_pos: 0, width: 100}`
-	- Copy the code for the canyon from part 1 into the draw function of this code
-	- Modify the code so that the property `x_pos` controls where the canyon is on the x-axis
-	- Modify the code so that the property `width` controls how wide the canyon is
-	- Adjust `x_pos` to place the canyon where you want it. Check that it moves intact when you adjust `x_pos`
-	- Make sure your collectable item is anchored correctly about its top left hand corner
-	
+4. Implement left and right for keyReleased [1 marks]
+	- Inside the function keyReleased write two if statements to make isLeft = false when the 'a' key is released and isRight = false when the 'd' key is released, 
+	- Test your conditional statements using console.log() to see the values of isLeft and isRight
 
-5. Collectable item [2 marks]
-	- In `setup`, initialise the variable `collectable` with this object `{x_pos: 100, y_pos: 100, size: 50}`
-	- Copy the code for the collectable item in part 1 into the draw function.
-	- As in stage 4 for adapt the code to use `x_pos`, `y_pos`, and `size` to control the positions and dimensions of the collectable item
-	- Make sure that the collectable item appears infront of everything but the game character.
-	- Make sure your collectable item is anchored correctly about its center
+5. Add game character [1 marks]
+	- Add your game character code from part 2 to this sketch.
+	- You need to place each block of character code within the appropriate `if` statement so that when the character is animated the correct image will be drawn.
 
-6. Mountain & cloud [2 marks]
-	- As with stage 4 initialise new objects for `mountain` and `cloud`
-	- Copy the code for the mountain and clouds in part 1 into the draw function.
-	- Add appropriate properties to each object to control the position and dimensions of the mountain and cloud
-	- Adjust the drawing code so that these properties control the positions and dimensions of the mountain and the cloud
-	- Make sure that the mountain appears behind the tree
-	- Make sure your mountains and clouds are anchored correctly
+6. Make the game character move left and right [2 marks]
+	- In the draw function add two if statements to make the character move left when isLeft is true and move right when isRight is true
+	- Test that your character moves left, right, and stops correctly when the a and s keys are pressed and released.
+        - HINT: you need to use the isLeft, isRight, and gameChar_x variables.
+
+7. Make the game character jump [2 marks]
+	- Add another if statement within keyPressed that checks when the 'w' key is pressed.
+	- When 'w' is pressed subtract 100 from gameChar_y . This will make the character jump up in the air (don't worry about it falling just yet)
+
+8. Add gravity [2 marks]
+    - Now it's time to make our game character fall down to the ground again
+    - Add an if statement within the draw function to detect when the character is  jumping above the ground. 
+        - HINT: gameChar_y is less than floorPos_y when this is happening.
+    - As the action of the if statement you should make the character fall towards the ground. 
+    - Do this by incrementing gameChar_y
+    - At the same time set isFalling to true so that the falling image of the character appears
+    - Finally add an else action to your conditional statement which sets isFalling to false. This will stop the falling image from appearing when your character is touching the ground again
+
+9. Prevent double jumps [1 marks]
+    - Now adjust the code inside keyPressed tp prevent the character from jumping when it already in the air.
+        - HINT: isFalling is useful here 
+
+Help it's not working !
+    - Okay this is not a time to hack your way out of the problem. 
+    - Instead go back through the instructions one stage at a time and check that you've done exactly what each stage tells you to.
+    - Try commenting out the code from the later stages and testing the earlier stages to make sure that they run correctly.
