@@ -2,100 +2,224 @@
 
 The Game Project
 
-1 - Background Scenery
+2 - Game character
 
 Use p5 drawing functions such as rect, ellipse, line, triangle and
-point to draw the scenery as set out in the code comments. The items
-should appear next to the text titles.
+point to draw the different states of your game character.
 
-Each bit of scenery is worth two marks:
+Write the code so that your character appears inside the box for each
+state.
+
+IMPORTANT: For each box the variables gameChar_x & gameChar_y are set to the bottom
+center of the box. You must combine these variables with arithmetic to
+determine the position of each shape that you draw. This will later allow
+you to adjust the position of your game character.
+
+Each state is worth two marks:
+
+//standing front facing = 2
+//jumping facing forwards = 2
+//walking left = 2
+//walking right = 2
+//jumping left and jumping right = 2
 
 0 marks = not a reasonable attempt
-1 mark = attempted but it's messy or lacks detail
-2 marks = you've used several shape functions to create the scenery
+1 mark = attempted but it lacks detail and you didn't use gameChar_x and gameChar_y correctly
+2 marks = you've used a selction of shape functions and made consistent use of gameChar_x and gameChar_y
 
-I've given titles and chosen some base colours, but feel free to
-imaginatively modify these and interpret the scenery titles loosely to
-match your game theme.
-
-WARNING: Do not get too carried away. If you're shape takes more than 15 lines of code to draw then you've probably over done it.
-
+WARNING: Do not get too carried away. Around 10-20 lines of code should work for each state of your game character.
 
 */
 
+var gameChar_x = 0;
+var gameChar_y = 0;
+
 function setup()
 {
-	createCanvas(1024, 576);
+	createCanvas(400, 600);
 }
 
 function draw()
 {
-	background(100, 155, 255); //fill the sky blue
+	background(255);
 
+	//Standing, facing frontwards
+
+	stroke(100);
+	noFill();
+	rect(20, 60, 50, 80);
 	noStroke();
-	fill(0,155,0);
-	rect(0, 432, 1024, 144); //draw some green ground
+	fill(0);
+	text("1. standing front facing", 20, 160);
 
-	//1. a cloud in the sky
-	//... add your code here
-
-	noStroke();
-	fill(255);
-	text("cloud", 200, 100);
-    ellipse(200, 150, 95, 70);
-    ellipse(160, 150, 70, 50);
-    ellipse(240, 150, 75, 50);
-
-
-
-	//2. a mountain in the distance
-	//... add your code here
+	gameChar_x = 45;
+	gameChar_y = 137;
+	//Add your code here ...
     
-    fill(180);
-    triangle(470, 432, 650, 432, 585, 290);
-    triangle(470, 432, 650, 432, 555, 270);
-
+    // draw the face
+    fill(213, 216, 220);
+    ellipse(gameChar_x , gameChar_y - 60, 26, 30);
+    
+    // draw the body
+    fill(0, 0, 256);
+    rect(gameChar_x - 15, gameChar_y - 45, 30, 40);
+    
+    // draw hands
+    fill(0);
+    rect(gameChar_x - 21, gameChar_y - 45, 6, 28);
+    rect(gameChar_x + 15, gameChar_y - 45, 6, 28);
+    
+    // draw the feets
+    fill(0);
+    rect(gameChar_x - 15, gameChar_y - 5, 10, 8); 
+    rect(gameChar_x + 5, gameChar_y - 5, 10, 8);
+    
+	//Jumping facing forwards
+	stroke(100);
+	noFill();
+	rect(220, 60, 50, 80);
 	noStroke();
-	fill(255);
-	text("mountain", 500, 256);
+	fill(0);
+	text("2. jumping facing forwards", 220, 160);
 
-
-
-	//3. a tree
-	//... add your code here
-    fill(148);
-    rect(880, 332, 50, 100);
-    fill(0, 255, 0);
-    triangle(840, 392, 970, 392, 905, 280);
-    triangle(840, 362, 970, 362, 905, 250);
-
-	noStroke();
-	fill(255);
-	text("tree", 800, 346);
+	gameChar_x = 245;
+	gameChar_y = 137;
+	//Add your code here ...
+    
+    // draw the face
+    fill(213, 216, 220);
+    ellipse(gameChar_x , gameChar_y - 60, 26, 30);
+    
+    // draw the body
+    fill(0, 0, 256);
+    rect(gameChar_x - 15, gameChar_y - 45, 30, 30);
+    
+    // draw hands
+    fill(0);
+    rect(gameChar_x - 21, gameChar_y - 65, 6, 28);
+    rect(gameChar_x + 15, gameChar_y - 65, 6, 28);
+    
+    // draw the feets
+    fill(0);
+    rect(gameChar_x - 15, gameChar_y - 15, 10, 8); 
+    rect(gameChar_x + 5, gameChar_y - 15, 10, 8);
     
 
-
-	//4. a canyon
-	//NB. the canyon should go from ground-level to the bottom of the screen
-
-	//... add your code here
-    fill(200);
-    rect(150, 432, 60, 144);
-    fill(100,100,100, 100);
-    rect(150, 432, 15, 144);
-    rect(195, 432, 15, 144);
-
-
+	//Walking, turned left
+	stroke(100);
+	noFill();
+	rect(20, 260, 50, 80);
 	noStroke();
-	fill(255);
-	text("canyon", 100, 480);
+	fill(0);
+	text("3. Walking left", 20, 360);
 
-	//5. a collectable token - eg. a jewel, fruit, coins
-	//... add your code here
-    fill(255, 215, 0);
-    ellipse(380, 412, 40, 40);
+	gameChar_x = 45;
+	gameChar_y = 337;
+	//Add your code here ...
     
+    
+    // draw the face
+    fill(213, 216, 220);
+    ellipse(gameChar_x , gameChar_y - 60, 20, 30);
+    
+    // draw the body
+    fill(0, 0, 256);
+    rect(gameChar_x - 8, gameChar_y - 45, 16, 40);
+    
+    // draw hands
+    fill(0);
+    rect(gameChar_x - 23, gameChar_y - 45, 26, 6);
+    
+    // draw the feets
+    fill(0);
+    rect(gameChar_x - 5, gameChar_y - 5, 10, 8); 
+    
+
+	//Walking, turned right
+	stroke(100);
+	noFill();
+	rect(220, 260, 50, 80);
 	noStroke();
-	fill(255);
-	text("collectable item", 400, 400);
+	fill(0);
+	text("4. Walking right", 220, 360);
+
+	gameChar_x = 245;
+	gameChar_y = 337;
+	//Add your code here ...
+
+    
+    // draw the face
+    fill(213, 216, 220);
+    ellipse(gameChar_x , gameChar_y - 60, 20, 30);
+    
+    // draw the body
+    fill(0, 0, 256);
+    rect(gameChar_x - 8, gameChar_y - 45, 16, 40);
+    
+    // draw hands
+    fill(0);
+    rect(gameChar_x - 3, gameChar_y - 45, 26, 6);
+    
+    // draw the feets
+    fill(0);
+    rect(gameChar_x - 5, gameChar_y - 5, 10, 8);
+    
+
+	//Jumping right
+	stroke(100);
+	noFill();
+	rect(20, 460, 50, 80);
+	noStroke();
+	fill(0);
+	text("5. Jumping to the right", 20, 560);
+
+	gameChar_x = 45;
+	gameChar_y = 537;
+	//Add your code here ...
+    
+    // draw the face
+    fill(213, 216, 220);
+    ellipse(gameChar_x , gameChar_y - 60, 20, 30);
+    
+    // draw the body
+    fill(0, 0, 256);
+    rect(gameChar_x - 8, gameChar_y - 45, 16, 30);
+    
+    // draw hands
+    fill(0);
+    rect(gameChar_x - 3, gameChar_y - 45, 26, 6);
+    
+    // draw the feets
+    fill(0);
+    rect(gameChar_x - 5, gameChar_y - 15, 10, 8);
+    
+    
+	//Jumping to the left
+	stroke(100);
+	noFill();
+	rect(220, 460, 50, 80);
+	noStroke();
+	fill(0);
+	text("6. Jumping to the left", 220, 560);
+
+	gameChar_x = 245;
+	gameChar_y = 537;
+	//Add your code here ...
+    
+    // draw the face
+    fill(213, 216, 220);
+    ellipse(gameChar_x , gameChar_y - 60, 20, 30);
+    
+    // draw the body
+    fill(0, 0, 256);
+    rect(gameChar_x - 8, gameChar_y - 45, 16, 30);
+    
+    // draw hands
+    fill(0);
+    rect(gameChar_x - 23, gameChar_y - 45, 26, 6);
+    
+    // draw the feets
+    fill(0);
+    rect(gameChar_x - 5, gameChar_y - 15, 10, 8);
+
 }
