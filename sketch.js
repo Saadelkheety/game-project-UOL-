@@ -12,6 +12,7 @@ var isLeft;
 var isRight;
 var isFalling;
 var isPlummeting;
+var isJumping;
 
 var trees_x;
 var treePos_y;
@@ -278,6 +279,13 @@ function draw()
         isFalling  = false;
     }
     
+    if (isJumping)
+    {
+       gameChar_y -= 180;
+       isJumping = false;
+       isFalling = true;
+    }
+    
 
 }
 
@@ -317,6 +325,11 @@ function keyReleased()
     if (keyCode == 37)
     {
         isLeft = false;
+    }
+    
+    if ( (keyCode == 38 || keyCode == 32))
+    {
+       isJumping = false;
     }
     
 }
