@@ -45,7 +45,7 @@ function setup()
     treePos_y = floorPos_y;
     
     flagpole = {
-        x_pos: gameChar_x,
+        x_pos: width*2,
         isReached: false
     };
     
@@ -134,6 +134,11 @@ function draw()
     drawTrees();
     // poleflag
     renderFlagpole()
+    if (flagpole.isReached == false)
+    {
+       checkFlagpole();
+    }
+    
     //a collectable token - eg. a jewel, fruit, coins
     for(var i = 0; i < collectables.length; i++)
     {
@@ -443,3 +448,10 @@ function renderFlagpole()
     pop();
 }
 
+function checkFlagpole()
+{
+    if(abs(gameChar_x-flagpole.x_pos) < 20)
+        {
+            flagpole.isReached = true;
+        }
+}
