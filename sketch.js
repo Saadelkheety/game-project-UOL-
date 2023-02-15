@@ -1,6 +1,6 @@
 /*
 
-The Game Project part 4 - side scrolling
+### The Game Project 6 – Adding game mechanics
 */
 
 
@@ -24,12 +24,15 @@ var old_gameChar_x;
 var collectables;
 var canyons;
 
+var game_score;
+
 function setup()
 {
 	createCanvas(1024, 576);
 	floorPos_y = height * 3/4;
 	gameChar_x = width/2;
 	gameChar_y = floorPos_y;
+    game_score = 0;
     
     //These variables will be used to animate your game character.
     isLeft = false;
@@ -41,16 +44,16 @@ function setup()
     treePos_y = floorPos_y;
     
     collectables = [
-        {x_pos: width/6, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width/2, y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width/6,      y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width/2.2,      y_pos: floorPos_y, size: 30, isFound: false},
         {x_pos: width * 0.75, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width * 1.2, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width * 1.5, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width * 1.8, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width * 2.1, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width * 2.4, y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width * 2.7, y_pos: floorPos_y, size: 30, isFound: false}
+        {x_pos: width,        y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 1.2,  y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 1.5,  y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 1.8,  y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 2.1,  y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 2.4,  y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width * 2.7,  y_pos: floorPos_y, size: 30, isFound: false}
     ];
     
     canyons = [
@@ -66,24 +69,24 @@ function setup()
     
     clouds = [
         {x_pos: 150,  y_pos: 50 ,width: 150},
-        {x_pos: 1400,  y_pos: 40 ,width: 130},
+        {x_pos: 1400, y_pos: 40 ,width: 130},
         {x_pos: 600,  y_pos: 50 ,width: 100},
-        {x_pos: 1900,  y_pos: 45 ,width: 110},
-        {x_pos: 1250, y_pos: 40 ,width: 90},
+        {x_pos: 1900, y_pos: 45 ,width: 110},
+        {x_pos: 1250, y_pos: 40 ,width: 90 },
         {x_pos: 2500, y_pos: 53 ,width: 180},
         {x_pos: 3700, y_pos: 55 ,width: 120},
-        {x_pos: 4150, y_pos: 48 ,width: 70}
+        {x_pos: 4150, y_pos: 48 ,width: 70 }
     ];
     
     mountains = [
-        {x_pos: width/5,      width: 250, height: 300},
+        {x_pos: width / 5,      width: 250, height: 300},
         {x_pos: width * 3,    width: 150, height: 300},
         {x_pos: width * 2,    width: 350, height: 300},
         {x_pos: width * 5.5,  width: 400, height: 300},
         {x_pos: width * 7,    width: 300, height: 300},
         {x_pos: width * 1,    width: 250, height: 300},
-        {x_pos: width * 4,  width: 450, height: 300},
-        {x_pos: width * 5, width: 500, height: 300},
+        {x_pos: width * 4,    width: 450, height: 300},
+        {x_pos: width * 5,    width: 500, height: 300},
     ];
     
     cameraPosX = 0;
@@ -93,11 +96,7 @@ function setup()
 }
 
 function draw()
-{
-    
-    cameraPosX = cameraPosX + gameChar_x - old_gameChar_x;
-    old_gameChar_x = gameChar_x;
-    
+{   
 	///////////DRAWING CODE//////////
 
 	background(100,155,255); //fill the sky blue
@@ -108,6 +107,8 @@ function draw()
 	rect(0, floorPos_y, width, height - floorPos_y); //draw some green ground
     
     // Implement scrolling
+    cameraPosX = cameraPosX + gameChar_x - old_gameChar_x;
+    old_gameChar_x = gameChar_x;
     push();
     translate(-cameraPosX, 0);
 
@@ -278,6 +279,8 @@ function draw()
 	}
     pop();
     
+    fill(255);
+    text('score: ' + game_score, 20, 15);
 	///////////INTERACTION CODE//////////
 	//Put conditional statements to move the game character below here
     if (isLeft)
@@ -405,6 +408,7 @@ function checkCollectable(t_collectable)
     if( dist(gameChar_x, gameChar_y, t_collectable.x_pos, t_collectable.y_pos) < 25 + t_collectable.size/2)
     {
         t_collectable.isFound = true;
+        game_score++
     }
 }
 
