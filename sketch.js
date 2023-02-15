@@ -52,31 +52,6 @@ function draw()
     cameraPosX = cameraPosX + gameChar_x - old_gameChar_x;
     old_gameChar_x = gameChar_x;
     
-    for(var i=0; i<lives; i++)
-    {
-        // add your standing front facing code
-        // draw the face
-        var lifeChar_x = width - (i+1) * 10
-        var lifeChar_y = 25;
-        var divider = 5
-        fill(213, 216, 220);
-        ellipse(lifeChar_x , lifeChar_y - 60/divider, 26/divider, 30/divider);
-
-        // draw the body
-        fill(0, 0, 256);
-        rect(lifeChar_x - 15/divider, lifeChar_y - 45/divider, 30/divider, 40/divider);
-
-        // draw hands
-        fill(0);
-        rect(lifeChar_x - 21/divider, lifeChar_y - 45/divider, 6/divider, 28/divider);
-        rect(lifeChar_x + 15/divider, lifeChar_y - 45/divider, 6/divider, 28/divider);
-
-        // draw the feets
-        fill(0);
-        rect(lifeChar_x - 15/divider, lifeChar_y - 5/divider, 10/divider, 8/divider); 
-        rect(lifeChar_x + 5/divider, lifeChar_y - 5/divider, 10/divider, 8/divider);
-    }
-    
     push();
     translate(-cameraPosX, 0);
 
@@ -253,8 +228,34 @@ function draw()
 	}
     pop();
     
+    for(var i=0; i<lives; i++)
+    {
+        // draw life tokens
+        // add your standing front facing code
+        // draw the face
+        var lifeChar_x = width - (i+1) * 10
+        var lifeChar_y = 25;
+        var divider = 5
+        fill(213, 216, 220);
+        ellipse(lifeChar_x , lifeChar_y - 60/divider, 26/divider, 30/divider);
+
+        // draw the body
+        fill(0, 0, 256);
+        rect(lifeChar_x - 15/divider, lifeChar_y - 45/divider, 30/divider, 40/divider);
+
+        // draw hands
+        fill(0);
+        rect(lifeChar_x - 21/divider, lifeChar_y - 45/divider, 6/divider, 28/divider);
+        rect(lifeChar_x + 15/divider, lifeChar_y - 45/divider, 6/divider, 28/divider);
+
+        // draw the feets
+        fill(0);
+        rect(lifeChar_x - 15/divider, lifeChar_y - 5/divider, 10/divider, 8/divider); 
+        rect(lifeChar_x + 5/divider, lifeChar_y - 5/divider, 10/divider, 8/divider);
+    }
+    
     fill(255);
-    text('score: ' + game_score + '   lives: ' + lives, 20, 15);
+    text('score: ' + game_score, 20, 15);
 	///////////INTERACTION CODE//////////
 	//Put conditional statements to move the game character below here
     if (isLeft)
