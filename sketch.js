@@ -140,7 +140,7 @@ function draw()
 	}
 	else if(isLeft)
 	{
-		// add your walking left code
+		// add walking left code
         
         // draw the face
         fill(213, 216, 220);
@@ -161,7 +161,7 @@ function draw()
 	}
 	else if(isRight)
 	{
-		// add your walking right code
+		// add walking right code
         
         // draw the face
         fill(213, 216, 220);
@@ -182,7 +182,7 @@ function draw()
 	}
 	else if(isFalling || isPlummeting)
 	{
-		// add your jumping facing forwards code
+		// add jumping facing forwards code
         
         // draw the face
         fill(213, 216, 220);
@@ -257,6 +257,21 @@ function draw()
     
     fill(255);
     text('score: ' + game_score, 20, 15);
+    
+    if(lives < 1)
+    {
+        fill(255);
+        text("Game over. Press space to continue.", width/2, height/2);
+        return;
+    }
+    
+    if(flagpole.isReached)
+    {
+        fill(255);
+        text("Level complete. Press space to continue.", width/2, height/2);
+        return;
+    }
+    
 	///////////INTERACTION CODE//////////
 	//Put conditional statements to move the game character below here
     if (isLeft)
@@ -308,7 +323,7 @@ function keyPressed()
 	
     if ( (keyCode == 38 || keyCode == 32) && !isFalling && !isPlummeting)
     {
-        gameChar_y -= 150;
+       isJumping = true;
     }
 }
 
