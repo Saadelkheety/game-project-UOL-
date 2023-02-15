@@ -23,6 +23,7 @@ var old_gameChar_x;
 
 var collectables;
 var canyons;
+var flagpole;
 
 var game_score;
 
@@ -43,9 +44,14 @@ function setup()
     trees_x = [100, 300, 600, 900, 1200, 1600, 6000, 9000, 12000];
     treePos_y = floorPos_y;
     
+    flagpole = {
+        x_pos: gameChar_x,
+        isReached: false
+    };
+    
     collectables = [
         {x_pos: width/6,      y_pos: floorPos_y, size: 30, isFound: false},
-        {x_pos: width/2.2,      y_pos: floorPos_y, size: 30, isFound: false},
+        {x_pos: width/2.2,    y_pos: floorPos_y, size: 30, isFound: false},
         {x_pos: width * 0.75, y_pos: floorPos_y, size: 30, isFound: false},
         {x_pos: width,        y_pos: floorPos_y, size: 30, isFound: false},
         {x_pos: width * 1.2,  y_pos: floorPos_y, size: 30, isFound: false},
@@ -126,7 +132,8 @@ function draw()
     drawMountains();
     // trees
     drawTrees();
-    
+    // poleflag
+    renderFlagpole()
     //a collectable token - eg. a jewel, fruit, coins
     for(var i = 0; i < collectables.length; i++)
     {
@@ -420,4 +427,19 @@ function checkCanyon(t_canyon)
     }
 }
 
+function renderFlagpole()
+{
+    push();
+    fill(255);
+    stroke(180);
+    strokeWeight(5);
+    line(flagpole.x_pos, floorPos_y , flagpole.x_pos, floorPos_y-200);
+    noStroke();
+    fill(255, 0, 0);
+    if(flagpole.isReached)
+        {
+            rect(flagpole.x_pos, floorPos_y-200, 50, 40);
+        }
+    pop();
+}
 
