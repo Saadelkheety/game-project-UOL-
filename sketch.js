@@ -29,6 +29,29 @@ var flagpole;
 var game_score;
 var lives;
 
+var jumpSound;
+var fallSound;
+var coinSound;
+var deathSound;
+var gameOverSound;
+var fallSoundRun;
+var deathSoundRun;
+var gameOverSoundRun;
+
+
+
+function preload()
+{
+    soundFormats('mp3','wav');
+    
+    //load your sounds here
+    jumpSound = loadSound('assets/jump.wav');
+    fallSound = loadSound('assets/fall.wav');
+    coinSound = loadSound('assets/coin.mp3')
+    deathSound = loadSound('assets/death.mp3')
+    gameOverSound = loadSound('assets/over.mp3')
+}
+
 function setup()
 {
 	createCanvas(1024, 576);
@@ -88,7 +111,7 @@ function draw()
     
     if (isPlummeting)
     {
-        gameChar_y += 10;
+        gameChar_y += 7;
         isLeft = isRight = false;
     }
     
@@ -227,15 +250,26 @@ function draw()
     
     if (lives < 1)
     {
+        push();
         fill(255);
-        text("Game over. Press space to continue.", width/2, height/2);
+        textSize(24);
+        text("Game over. Press space to continue.", width/4, height/2);
+        if (!deathSoundRun)
+        {
+            deathSound.play();
+            deathSoundRun = true;
+        }
+        pop();
         return;
     }
     
     if (flagpole.isReached)
     {
+        push();
         fill(255);
-        text("Level complete. Press space to continue.", width/2, height/2);
+        textSize(24);
+        text("Level complete. Press space to continue.", width/4, height/2);
+        pop();
         return;
     }
     
@@ -254,7 +288,7 @@ function draw()
     if (gameChar_y < floorPos_y)
     {
         isFalling  = true;
-        gameChar_y = min(gameChar_y + 5, floorPos_y);
+        gameChar_y = min(gameChar_y + 4, floorPos_y);
     }
     else
     {
@@ -290,6 +324,7 @@ function keyPressed()
     if( (keyCode == 38 || keyCode == 32) && !isFalling && !isPlummeting)
     {
        isJumping = true;
+       jumpSound.play();
     }
 }
 
@@ -376,6 +411,7 @@ function checkCollectable(t_collectable)
     if (dist(gameChar_x, gameChar_y, t_collectable.x_pos, t_collectable.y_pos) < 25 + t_collectable.size/2)
     {
         t_collectable.isFound = true;
+        coinSound.play();
         game_score++
     }
 }
@@ -385,6 +421,11 @@ function checkCanyon(t_canyon)
     if (gameChar_x > t_canyon.x_pos + 14 && gameChar_x < t_canyon.x_pos + t_canyon.width - 14 && gameChar_y >= floorPos_y)
     {
         isPlummeting = true;
+        if (!fallSoundRun)
+        {
+          fallSound.play();
+          fallSoundRun = true;
+        }
     }
 }
 
@@ -400,6 +441,11 @@ function renderFlagpole()
     if (flagpole.isReached)
     {
         rect(flagpole.x_pos, floorPos_y-200, 50, 40);
+        if(!gameOverSoundRun)
+        {
+           gameOverSound.play();
+           gameOverSoundRun = true;
+        }
     }
     pop();
 }
@@ -429,6 +475,9 @@ function startGame()
     gameChar_x = width/2;
 	gameChar_y = floorPos_y;
     game_score = 0;
+    fallSoundRun = false;
+    deathSoundRun = false;
+    gameOverSoundRun = false;
     //These variables will be used to animate your game character.
     isLeft = false;
     isRight = false;
