@@ -43,7 +43,6 @@ function draw()
 
 	background(100,155,255); //fill the sky blue
 
-
 	noStroke();
 	fill(0,155,0);
 	rect(0, floorPos_y, width, height - floorPos_y); //draw some green ground
@@ -72,7 +71,7 @@ function draw()
     drawTrees();
     // poleflag
     renderFlagpole()
-    if (flagpole.isReached == false)
+    if(flagpole.isReached == false)
     {
        checkFlagpole();
     }
@@ -274,17 +273,17 @@ function draw()
     
 	///////////INTERACTION CODE//////////
 	//Put conditional statements to move the game character below here
-    if (isLeft)
+    if(isLeft)
     {
         gameChar_x -= 3;
     }
     
-    if (isRight)
+    if(isRight)
     {
         gameChar_x += 3;
     }
     
-    if (gameChar_y < floorPos_y)
+    if(gameChar_y < floorPos_y)
     {
         isFalling  = true;
         gameChar_y = min(gameChar_y + 5, floorPos_y);
@@ -294,7 +293,7 @@ function draw()
         isFalling  = false;
     }
     
-    if (isJumping)
+    if(isJumping)
     {
        gameChar_y -= 180;
        isJumping = false;
@@ -311,17 +310,17 @@ function keyPressed()
 	// keys are pressed.
 
 	//open up the console to see how these work
-    if (keyCode == 39 && !isPlummeting)
+    if(keyCode == 39 && !isPlummeting)
     {
         isRight = true;   
     }
     
-    if (keyCode == 37 && !isPlummeting)
+    if(keyCode == 37 && !isPlummeting)
     {
         isLeft = true;
     }
 	
-    if ( (keyCode == 38 || keyCode == 32) && !isFalling && !isPlummeting)
+    if( (keyCode == 38 || keyCode == 32) && !isFalling && !isPlummeting)
     {
        isJumping = true;
     }
@@ -332,17 +331,17 @@ function keyReleased()
 	// if statements to control the animation of the character when
 	// keys are released.
     
-    if (keyCode == 39)
+    if(keyCode == 39)
     {
         isRight = false;
     }
     
-    if (keyCode == 37)
+    if(keyCode == 37)
     {
         isLeft = false;
     }
     
-    if ( (keyCode == 38 || keyCode == 32))
+    if( (keyCode == 38 || keyCode == 32))
     {
        isJumping = false;
     }
@@ -408,7 +407,7 @@ function drawCanyon(t_canyon)
 
 function checkCollectable(t_collectable)
 {
-    if( dist(gameChar_x, gameChar_y, t_collectable.x_pos, t_collectable.y_pos) < 25 + t_collectable.size/2)
+    if(dist(gameChar_x, gameChar_y, t_collectable.x_pos, t_collectable.y_pos) < 25 + t_collectable.size/2)
     {
         t_collectable.isFound = true;
         game_score++
@@ -433,34 +432,35 @@ function renderFlagpole()
     noStroke();
     fill(255, 0, 0);
     if(flagpole.isReached)
-        {
-            rect(flagpole.x_pos, floorPos_y-200, 50, 40);
-        }
+    {
+        rect(flagpole.x_pos, floorPos_y-200, 50, 40);
+    }
     pop();
 }
 
 function checkFlagpole()
 {
     if(abs(gameChar_x-flagpole.x_pos) < 20)
-        {
-            flagpole.isReached = true;
-        }
+    {
+        flagpole.isReached = true;
+    }
 }
 
 function checkPlayerDie()
 {
     if(gameChar_y > height)
+    {
+        lives--;
+        if(lives > 0)
         {
-            lives--;
-            if(lives > 0){
-                startGame();
-            }
+            startGame();
         }
+    }
 }
 
 function startGame()
 {
-    	gameChar_x = width/2;
+    gameChar_x = width/2;
 	gameChar_y = floorPos_y;
     game_score = 0;
     
